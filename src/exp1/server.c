@@ -7,7 +7,7 @@
 #include <unistd.h>   
 #include <string.h>   
 
-#define SERVER_PORT 5432
+#define SERVER_PORT 5431
 #define MAX_PENDING 5
 #define MAX_LINE    256
 
@@ -15,7 +15,7 @@ int main(int argc, char **argv)
 {
     struct sockaddr_in sin;
     char buf[MAX_LINE];
-    int len;
+    int len = sizeof(sin);
     int s, new_s;
 
     /* build address data structure */
@@ -25,7 +25,7 @@ int main(int argc, char **argv)
     sin.sin_port = htons(SERVER_PORT);
 
     /* setup passive open */
-    if ((s = socket(PF_INET, SOCK_STREAM, 0)) < 0) {
+    if ((s = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
         perror("simplex-talk: socket");
         exit(1);
     }
