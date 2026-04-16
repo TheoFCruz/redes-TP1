@@ -51,6 +51,8 @@ int main(int argc, char * argv[])
     exit(1);
   }
 
+  printf("Connected to %s:%d\n", host, SERVER_PORT);
+
   /* main loop: get and send lines of text */
   while (fgets(buf, sizeof(buf), stdin)) {
     buf[MAX_LINE-1] = '\0';
