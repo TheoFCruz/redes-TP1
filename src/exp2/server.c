@@ -7,8 +7,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-/* Correção 2: Porta alterada de 5432 para 54321 */
-#define SERVER_PORT 54321 
+#define SERVER_PORT 5431 
 #define MAX_PENDING 5
 #define MAX_LINE 256
 
@@ -25,7 +24,7 @@ int main() {
     sin.sin_addr.s_addr = INADDR_ANY;
     sin.sin_port = htons(SERVER_PORT);
     
-    /* CORREÇÃO: Criando o socket antes de usar o bind */
+    /* Correção: Criando o socket antes de usar o bind */
     if ((s = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
         perror("simplex-talk: socket");
         exit(1);
@@ -37,7 +36,7 @@ int main() {
         exit(1);
     }
 
-    /* CORREÇÃO: Colocando o socket em modo de escuta */
+    /* Colocando o socket em modo de escuta */
     if (listen(s, MAX_PENDING) < 0) {
         perror("simplex-talk: listen");
         exit(1);
@@ -45,7 +44,7 @@ int main() {
 
     /* espera pela conexão, então recebe e imprime o texto */
     while(1){
-        /* Correção 3: Inicializando addr_len antes do accept */
+        /* Correção: Inicializando addr_len antes do accept */
         addr_len = sizeof(sin); 
         
         if((new_s = accept(s, (struct sockaddr *)&sin, &addr_len)) < 0) {
@@ -55,7 +54,7 @@ int main() {
         
         while((buf_len = recv(new_s, buf, sizeof(buf), 0))) {
             fputs(buf, stdout);
-           /* ALTERAÇÕES EXERCICIO 33: Envia a mesma linha
+           /* ALTERAÇÕES EXERCICIO 3: Envia a mesma linha
            de volta para o cliente*/
             if (send(new_s, buf, buf_len,0) <0){
             perror("Erro ao tentar enviar de volta");
