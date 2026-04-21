@@ -2,13 +2,12 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
-#include <arpa/inet.h> /* Necessário para o inet_addr */
+#include <arpa/inet.h> 
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
 
-/* Correção 2: A porta deve bater exatamente com a do servidor */
-#define SERVER_PORT 54321
+#define SERVER_PORT 5431
 #define MAX_LINE 256
 
 int main(int argc, char * argv[]) {
@@ -27,7 +26,6 @@ int main(int argc, char * argv[]) {
 
     /* constrói a estrutura de dados do endereço */
     bzero((char *)&sin, sizeof(sin));
-    /* Correção 1: Usando AF_INET */
     sin.sin_family = AF_INET;
     
     /* Correção 4: Lê direto o IP em dotted notation e converte para binário */
@@ -59,18 +57,17 @@ int main(int argc, char * argv[]) {
         /* Aqui envia para o servidor */
          send(s, buf, len, 0);
 
-        /* ALTERAÇÕES EXERCICIO 33: ESPERA A RESPOSTA DO SERVIDOR*/
+        /* ALTERAÇÕES EXERCICIO 3: ESPERA A RESPOSTA DO SERVIDOR*/
         int received = recv(s, buf, sizeof(buf), 0);
         if (received>0){
- 	   printf("Resposta do Servidor: %s", buf);
+ 	   		printf("Resposta do Servidor: %s", buf);
         } else if (received == 0) {
-	    printf("Servidor sem conexão.\n");
-	    break;
-         } else {
-	     perror("Erro no recv");
-             break;
-    }
-  
+	    	printf("Servidor sem conexão.\n");
+	    	break;
+        } else {
+	    	perror("Erro no recv");
+            break;
+    	}
     }
     close(s);
     return 0;
