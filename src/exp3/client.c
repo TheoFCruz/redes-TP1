@@ -8,7 +8,7 @@
 #include <unistd.h>   
 #include <string.h>   
 
-#define SERVER_PORT 5431
+#define SERVER_PORT 54321
 #define MAX_LINE 256
 
 int main(int argc, char * argv[])
