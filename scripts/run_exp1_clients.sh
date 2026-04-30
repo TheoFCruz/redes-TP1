@@ -10,14 +10,9 @@ fi
 HOST="$1"
 CLIENTS="${2:-10}"
 PIDS=""
-MONITOR_PID=""
 
 # cleanup trap
 cleanup() {
-    if [ -n "$MONITOR_PID" ]; then
-        kill "$MONITOR_PID" 2>/dev/null
-    fi
-
     # Stop both sides of the background pipelines: the clients and sleepers.
     pkill -TERM -P $$ 2>/dev/null
     kill $PIDS 2>/dev/null
@@ -37,24 +32,12 @@ for i in $(seq 1 "$CLIENTS"); do
     sleep 0.1
 done
 
-# Monitor client processes
-(
-    while true; do
-        for pid in $PIDS; do
-            if ! kill -0 "$pid" 2>/dev/null; then
-                echo "client process $pid exited before quit"
-            fi
-        done
-        sleep 2
-    done
-) &
-MONITOR_PID="$!"
-
 sleep 0.5
 
 echo
 echo "Clients sent their initial messages and are still running."
 echo "Type 'quit' to close all clients."
+echo
 
 while IFS= read -r COMMAND; do
     if [ "$COMMAND" = "quit" ]; then
