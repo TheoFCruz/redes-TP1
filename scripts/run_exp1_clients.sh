@@ -33,6 +33,8 @@ for i in $(seq 1 "$CLIENTS"); do
     # Send one message, then keep stdin open until the script stops the client.
     { printf 'client %s connected\n' "$i"; sleep 2147483647; } | ./bin/exp1_client "$HOST" &
     PIDS="$PIDS $!"
+
+    sleep 0.1
 done
 
 # Monitor client processes
